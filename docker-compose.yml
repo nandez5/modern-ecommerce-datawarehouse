@@ -1,0 +1,81 @@
+# docker-compose.yml
+# Local development environment for E-commerce Data Warehouse
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecommerce_dw_postgres
+    environment:
+      POSTGRES_DB: ecommerce_dw
+      POSTGRES_USER: dbt_user
+      POSTGRES_PASSWORD: dbt_password
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_scripts:/docker-entrypoint-initdb.d
+    networks:
+      - ecommerce_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dbt_user -d ecommerce_dw"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ecommerce_dw_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ecommerce-dw.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - ecommerce_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Metabase for BI visualization (optional)
+  metabase:
+    image: metabase/metabase:latest
+    container_name: ecommerce_dw_metabase
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ecommerce_dw
+      MB_DB_PORT: 5432
+      MB_DB_USER: dbt_user
+      MB_DB_PASS: dbt_password
+      MB_DB_HOST: postgres
+    ports:
+      - "3000:3000"
+    networks:
+      - ecommerce_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - metabase_data:/metabase-data
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  metabase_data:
+    driver: local
+
+networks:
+  ecommerce_network:
+    driver: bridge

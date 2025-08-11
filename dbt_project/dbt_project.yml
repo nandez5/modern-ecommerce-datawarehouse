@@ -1,0 +1,42 @@
+name: 'ecommerce_dw'
+version: '1.0.0'
+config-version: 2
+
+profile: 'ecommerce_dw'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"] 
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  ecommerce_dw:
+    +materialized: table
+    
+    staging:
+      +materialized: view
+    
+    intermediate:
+      +materialized: view
+    
+    marts:
+      +materialized: table
+
+vars:
+  start_date: '2023-01-01'
+  end_date: '2024-12-31'
+  free_shipping_threshold: 50
+  high_value_customer_threshold: 1000
+  churn_days_threshold: 90
+
+quoting:
+  database: false
+  schema: false
+  identifier: false

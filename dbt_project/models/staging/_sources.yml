@@ -1,0 +1,162 @@
+version: 2
+
+sources:
+  - name: raw_ecommerce
+    description: "Raw e-commerce data from various source systems"
+    database: ecommerce_dw
+    schema: public
+    
+    tables:
+      - name: customers
+        description: "Customer master data with demographics and segmentation"
+        columns:
+          - name: customer_id
+            description: "Unique customer identifier"
+            tests:
+              - unique
+              - not_null
+          - name: email
+            description: "Customer email address"
+            tests:
+              - not_null
+          - name: customer_segment
+            description: "Customer value segment (VIP, Regular, New)"
+            tests:
+              - accepted_values:
+                  values: ['VIP', 'Regular', 'New']
+          - name: is_active
+            description: "Flag indicating if customer is active"
+            tests:
+              - not_null
+      
+      - name: products
+        description: "Product master data with pricing and categorization"
+        columns:
+          - name: product_id
+            description: "Unique product identifier"
+            tests:
+              - unique
+              - not_null
+          - name: sku
+            description: "Stock keeping unit"
+            tests:
+              - unique
+              - not_null
+          - name: retail_price
+            description: "Product retail price"
+            tests:
+              - not_null
+          - name: is_active
+            description: "Flag indicating if product is active"
+            tests:
+              - not_null
+      
+      - name: orders
+        description: "Order header information with customer and payment details"
+        columns:
+          - name: order_id
+            description: "Unique order identifier"
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: "Customer who placed the order"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_ecommerce', 'customers')
+                  field: customer_id
+          - name: order_date
+            description: "Date when order was placed"
+            tests:
+              - not_null
+          - name: total_amount
+            description: "Total order amount"
+            tests:
+              - not_null
+          - name: order_status
+            description: "Current status of the order"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned']
+      
+      - name: order_items
+        description: "Individual items within each order"
+        columns:
+          - name: order_item_id
+            description: "Unique order item identifier"
+            tests:
+              - unique
+              - not_null
+          - name: order_id
+            description: "Parent order identifier"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_ecommerce', 'orders')
+                  field: order_id
+          - name: product_id
+            description: "Product purchased"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_ecommerce', 'products')
+                  field: product_id
+          - name: quantity
+            description: "Quantity of product ordered"
+            tests:
+              - not_null
+          - name: unit_price
+            description: "Price per unit at time of purchase"
+            tests:
+              - not_null
+      
+      - name: web_sessions
+        description: "Website visitor sessions and behavior tracking"
+        columns:
+          - name: session_id
+            description: "Unique session identifier"
+            tests:
+              - unique
+              - not_null
+          - name: session_date
+            description: "Date of the session"
+            tests:
+              - not_null
+          - name: device_type
+            description: "Device used for session"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['desktop', 'mobile', 'tablet']
+          - name: traffic_source
+            description: "Source of website traffic"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['organic', 'paid_search', 'social_media', 'direct', 'referral', 'email']
+          - name: converted
+            description: "Whether session resulted in conversion"
+            tests:
+              - not_null
+      
+      - name: marketing_spend
+        description: "Daily marketing spend by channel and campaign"
+        columns:
+          - name: spend_date
+            description: "Date of marketing spend"
+            tests:
+              - not_null
+          - name: channel
+            description: "Marketing channel"
+            tests:
+              - not_null
+          - name: campaign_name
+            description: "Campaign identifier"
+            tests:
+              - not_null
+          - name: spend_amount
+            description: "Amount spent on campaign"
+            tests:
+              - not_null

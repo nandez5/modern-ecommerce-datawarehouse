@@ -1,0 +1,174 @@
+{
+  "timestamp": "2025-08-11T12:21:51.297451",
+  "tables": {
+    "customers": {
+      "row_count": 10000,
+      "column_count": 22,
+      "null_percentages": {
+        "customer_id": 0.0,
+        "first_name": 0.0,
+        "last_name": 0.0,
+        "email": 0.0,
+        "phone": 0.0,
+        "birth_date": 0.0,
+        "gender": 0.0,
+        "address_line1": 0.0,
+        "city": 0.0,
+        "state": 0.0,
+        "postal_code": 0.0,
+        "country": 0.0,
+        "customer_segment": 0.0,
+        "acquisition_channel": 0.0,
+        "lifetime_value": 0.0,
+        "created_at": 0.0,
+        "updated_at": 0.0,
+        "last_order_date": 0.1705,
+        "is_active": 0.0,
+        "email_subscribed": 0.0,
+        "preferred_contact": 0.0,
+        "credit_score_range": 0.0
+      },
+      "duplicate_rows": "0",
+      "memory_usage_mb": 11.130043983459473
+    },
+    "products": {
+      "row_count": 5000,
+      "column_count": 23,
+      "null_percentages": {
+        "product_id": 0.0,
+        "sku": 0.0,
+        "product_name": 0.0,
+        "brand": 0.0,
+        "category_l1": 0.0,
+        "category_l2": 0.0,
+        "retail_price": 0.0,
+        "cost": 0.0,
+        "margin_percent": 0.0,
+        "weight_kg": 0.0,
+        "dimensions_cm": 0.0,
+        "color": 0.7824,
+        "size": 0.8956,
+        "stock_quantity": 0.0,
+        "reorder_point": 0.0,
+        "supplier": 0.0,
+        "lifecycle_stage": 0.0,
+        "is_active": 0.0,
+        "is_featured": 0.0,
+        "created_at": 0.0,
+        "avg_rating": 0.0,
+        "total_reviews": 0.0,
+        "total_sales": 0.0
+      },
+      "duplicate_rows": "0",
+      "memory_usage_mb": 3.9153079986572266
+    },
+    "orders": {
+      "row_count": 25000,
+      "column_count": 17,
+      "null_percentages": {
+        "order_id": 0.0,
+        "customer_id": 0.0,
+        "order_date": 0.0,
+        "order_status": 0.0,
+        "payment_method": 0.0,
+        "total_items": 0.0,
+        "subtotal": 0.0,
+        "discount_amount": 0.0,
+        "tax_amount": 0.0,
+        "shipping_cost": 0.0,
+        "total_amount": 0.0,
+        "currency": 0.0,
+        "acquisition_channel": 0.0,
+        "device_type": 0.0,
+        "is_first_order": 0.0,
+        "created_at": 0.0,
+        "updated_at": 0.0
+      },
+      "duplicate_rows": "0",
+      "memory_usage_mb": 13.634965896606445
+    },
+    "order_items": {
+      "row_count": 46612,
+      "column_count": 8,
+      "null_percentages": {
+        "order_item_id": 0.0,
+        "order_id": 0.0,
+        "product_id": 0.0,
+        "quantity": 0.0,
+        "unit_price": 0.0,
+        "line_total": 0.0,
+        "cost_per_unit": 0.0,
+        "line_cost": 0.0
+      },
+      "duplicate_rows": "0",
+      "memory_usage_mb": 11.380008697509766
+    },
+    "web_sessions": {
+      "row_count": 50000,
+      "column_count": 19,
+      "null_percentages": {
+        "session_id": 0.0,
+        "customer_id": 0.29948,
+        "session_date": 0.0,
+        "session_start_time": 0.0,
+        "session_duration_seconds": 0.0,
+        "page_views": 0.0,
+        "unique_page_views": 0.0,
+        "bounce": 0.0,
+        "converted": 0.0,
+        "device_type": 0.0,
+        "browser": 0.0,
+        "operating_system": 0.0,
+        "traffic_source": 0.0,
+        "landing_page": 0.0,
+        "exit_page": 0.0,
+        "country": 0.0,
+        "city": 0.0,
+        "ip_address": 0.0,
+        "user_agent": 0.0
+      },
+      "duplicate_rows": "0",
+      "memory_usage_mb": 44.297553062438965
+    },
+    "marketing_spend": {
+      "row_count": 10494,
+      "column_count": 13,
+      "null_percentages": {
+        "spend_date": 0.0,
+        "channel": 0.0,
+        "campaign_name": 0.0,
+        "spend_amount": 0.0,
+        "impressions": 0.6363636363636364,
+        "clicks": 0.6363636363636364,
+        "conversions": 0.0,
+        "cpc": 0.6363636363636364,
+        "cpm": 0.6363636363636364,
+        "cpa": 0.002287021154945683,
+        "conversion_rate": 0.6363636363636364,
+        "roas": 0.0,
+        "currency": 0.0
+      },
+      "duplicate_rows": "0",
+      "memory_usage_mb": 3.4819278717041016
+    }
+  },
+  "referential_integrity": {
+    "orders_customers": {
+      "valid_references": "25000",
+      "total_orders": 25000,
+      "integrity_percentage": 100.0
+    },
+    "order_items_products": {
+      "valid_references": "46612",
+      "total_items": 46612,
+      "integrity_percentage": 100.0
+    }
+  },
+  "business_rules": {
+    "orders": {
+      "positive_amounts": "25000",
+      "valid_dates": "25000",
+      "reasonable_totals": "24994"
+    }
+  }
+}
